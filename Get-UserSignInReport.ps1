@@ -25,6 +25,7 @@ function Get-UserSignInReport {
                 FailureCount    = ($Script:AzureSigninIndex[$i.UserDisplayName]).count
             }
         }
+        $Script:Report | Out-GridView -Title "Azure Sign In Report"
     }
     if ($User) {
         [PSCustomObject]@{
