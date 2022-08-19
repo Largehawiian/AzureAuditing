@@ -28,15 +28,19 @@ function Get-UserSignInReport {
         $Script:Report | Out-GridView -Title "Azure Sign In Report"
     }
     if ($User) {
-        [PSCustomObject]@{
-            Name            = $UserName
-            IPAddress       = $Script:AzureSigninIndex[$UserName].IPAddress | Select-Object -Unique
-            ErrorCode       = $Script:AzureSigninIndex[$UserName].ErrorCode | Select-Object -Unique
-            FailureReason   = $Script:AzureSigninIndex[$UserName].FailureReason | Select-Object -Unique
-            OperatingSystem = $Script:AzureSigninIndex[$UserName].OperatingSystem | Select-Object -Unique
-            Browser         = $Script:AzureSigninIndex[$UserName].Browser | Select-Object -Unique
-            Location        = $Script:AzureSigninIndex[$UserName].Location | Select-Object -Unique
-            FailureCount    = ($Script:AzureSigninIndex[$UserName]).count
+        $Script:UserToProcess = $Script:AzureSigninIndex[$UserName]
+        $Script:Report = for ($i = 0; $i -lt $UsersToProcess.count; $i++) {
+            [PSCustomObject]@{
+                Name            = $UserName
+                IPAddress       = $Script:UserToProcess[$i].IPAddress 
+                ErrorCode       = $Script:UserToProcess[$i].ErrorCode 
+                FailureReason   = $Script:UserToProcess[$i].FailureReason 
+                OperatingSystem = $Script:UserToProcess[$i].OperatingSystem 
+                Browser         = $Script:UserToProcess[$i].Browser 
+                Location        = $Script:UserToProcess[$i].Location 
+                FailureCount    = ($Script:UserToProcess[$i]).count
+            }
         }
     }
+    $Script:Report | Out-GridView -Title "Azure Sign In Report"
 }
